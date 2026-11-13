@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carta Feria de Cali Discoteca</title>
+<style>
+  /* Layout: la carta ocupa todo el ancho del celular, con un botón para ampliarla a pantalla completa. */
+  :root {
+    --bg: #05020f;
+    --fg: #f3ecff;
+    --muted: #b9a8ff;
+    --pink: #ff3df0;
+    --cyan: #38e8ff;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 16px 28px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  .open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 16px; }
+  .open img { display: block; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 0 0 2px var(--pink), 0 0 26px rgba(255,61,240,.55); }
+  .open:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
+  .hint { margin: 0; text-align: center; color: var(--muted); font-size: .95rem; letter-spacing: .02em; }
+
+  .viewer { position: fixed; inset: 0; z-index: 20; background: #000; overflow: auto; -webkit-overflow-scrolling: touch; }
+  .viewer img { display: block; width: 240vw; max-width: none; height: auto; }
+  .close {
+    position: fixed; z-index: 21;
+    top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px));
+    border: 0; border-radius: 999px; padding: 12px 20px; cursor: pointer;
+    font: 700 1rem system-ui, sans-serif; color: #000; background: #fff;
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <button type="button" class="open" id="open" aria-label="Ampliar la carta">
+    <img src="carta.jpg" alt="Carta de precios: tequilas, aguardientes, whisky, ron, cerveza, jarras de cerveza, limonadas, gaseosas y otras bebidas" width="1131" height="1600">
+  </button>
+  <p class="hint">Toca la carta para ampliarla</p>
+</div>
+
+<div class="viewer" id="viewer" hidden>
+  <button type="button" class="close" id="close">Cerrar</button>
+  <img src="carta.jpg" alt="Carta de precios ampliada">
+</div>
+
+<script>
+  (function () {
+    var v = document.getElementById('viewer');
+    function show() { v.hidden = false; v.scrollTop = 0; v.scrollLeft = 0; document.body.style.overflow = 'hidden'; }
+    function hide() { v.hidden = true; document.body.style.overflow = ''; }
+    document.getElementById('open').addEventListener('click', show);
+    document.getElementById('close').addEventListener('click', hide);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+  })();
+</script>
+</body>
+</html>
